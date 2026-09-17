@@ -1,0 +1,20 @@
+-- MusicBrainz identifiers stay in their own namespace; internal UUIDs are unchanged.
+alter table public.artist_provider_ids drop constraint artist_provider_ids_provider_check;
+alter table public.artist_provider_ids add constraint artist_provider_ids_provider_check check(provider in ('spotify','apple','musicbrainz'));
+alter table public.release_provider_ids drop constraint release_provider_ids_provider_check;
+alter table public.release_provider_ids add constraint release_provider_ids_provider_check check(provider in ('spotify','apple','musicbrainz'));
+alter table public.song_provider_ids drop constraint song_provider_ids_provider_check;
+alter table public.song_provider_ids add constraint song_provider_ids_provider_check check(provider in ('spotify','apple','musicbrainz'));
+alter table public.appearance_provider_ids drop constraint appearance_provider_ids_provider_check;
+alter table public.appearance_provider_ids add constraint appearance_provider_ids_provider_check check(provider in ('spotify','apple','musicbrainz'));
+alter table public.song_recording_codes drop constraint song_recording_codes_source_provider_check;
+alter table public.song_recording_codes add constraint song_recording_codes_source_provider_check check(source_provider in ('spotify','apple','musicbrainz'));
+alter table public.catalog_imports drop constraint catalog_imports_provider_check;
+alter table public.catalog_imports add constraint catalog_imports_provider_check check(provider in ('spotify','apple','musicbrainz'));
+alter table public.songs add column catalog_type text not null default 'official_released' check(catalog_type in ('official_released','unreleased'));
+alter table public.songs add column source_metadata jsonb not null default '{}';
+alter table public.releases add column source_metadata jsonb not null default '{}';
+alter table public.release_tracks add column source_metadata jsonb not null default '{}';
+create index songs_catalog_type_idx on public.songs(catalog_type);
+comment on column public.songs.catalog_type is 'Only official_released is eligible for the future main recommendation engine; unreleased is reserved, not populated by this importer.';
+comment on column public.release_tracks.source_metadata is 'Metadata-only source evidence, including MusicBrainz recording/track IDs, artist-credit join phrases, release status and release-group identity. No lyrics or user prompts.';

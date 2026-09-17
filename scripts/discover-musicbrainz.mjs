@@ -1,0 +1,12 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { MusicBrainzClient, DRAKE_MBID } from '../server/catalog/musicbrainz-client.mjs';
+const api = new MusicBrainzClient();
+await mkdir(new URL('../artifacts/musicbrainz/', import.meta.url), { recursive: true });
+const artist = await api.get(`artist/${DRAKE_MBID}`);
+if (artist.name !== 'Drake' || !/Canadian rapper/i.test(artist.disambiguation)) throw new Error('drake_artist_identity_mismatch');
+const recordings = await api.browse('recording', { artist: DRAKE_MBID }, 'artist-credits+isrcs');
+await writeFile(new URL('../artifacts/musicbrainz/recordings.json', import.meta.url), JSON.stringify(recordings));
+const releaseList = await api.browse('release', { track_artist: DRAKE_MBID }, 'artist-credits+release-groups');
+const releases = new Map(releaseList.map(release => [release.id, release]));
+await writeFile(new URL('../artifacts/musicbrainz/discovered-releases.json', import.meta.url), JSON.stringify([...releases.values()]));
+console.log(JSON.stringify({ recordings: recordings.length, releaseReferences: releases.size, statuses: [...releases.values()].reduce((a,r) => ({ ...a, [r.status || 'missing']: (a[r.status || 'missing'] || 0)+1 }), {}), sample: recordings.slice(0,2), requests: api.requests }, null, 2));

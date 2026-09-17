@@ -1,115 +1,29 @@
-import {
-  Tabs,
-  TabList,
-  TabTrigger,
-  TabSlot,
-  TabTriggerSlotProps,
-  TabListProps,
-} from 'expo-router/ui';
-import { SymbolView } from 'expo-symbols';
-import { Pressable, useColorScheme, View, StyleSheet } from 'react-native';
+import { Tabs, TabList, TabSlot, TabTrigger, type TabTriggerSlotProps } from 'expo-router/ui';
+import type { Href } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Icon } from './icon';
+import { colors, layout } from '@/design/tokens';
 
-import { ExternalLink } from './external-link';
-import { ThemedText } from './themed-text';
-import { ThemedView } from './themed-view';
-
-import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
-
+// Flat, opaque browser-only navigation. Real Liquid Glass exists only in the native iOS implementation.
 export default function AppTabs() {
-  return (
-    <Tabs>
-      <TabSlot style={{ height: '100%' }} />
-      <TabList asChild>
-        <CustomTabList>
-          <TabTrigger name="home" href="/" asChild>
-            <TabButton>Home</TabButton>
-          </TabTrigger>
-          <TabTrigger name="explore" href="/explore" asChild>
-            <TabButton>Explore</TabButton>
-          </TabTrigger>
-        </CustomTabList>
-      </TabList>
-    </Tabs>
-  );
+  return <Tabs><View style={styles.content}><TabSlot style={{ flex: 1 }} /></View>
+    <TabList asChild><View style={styles.list}>
+      <TabTrigger name="home" href="/home" asChild><TabButton name="home">Home</TabButton></TabTrigger>
+      <TabTrigger name="saved" href="/saved" asChild><TabButton name="saved">Saved</TabButton></TabTrigger>
+      <TabTrigger name="history" href={'/history' as Href} asChild><TabButton name="history">History</TabButton></TabTrigger>
+      <TabTrigger name="settings" href="/settings" asChild><TabButton name="settings">Settings</TabButton></TabTrigger>
+    </View></TabList>
+  </Tabs>;
 }
-
-export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps) {
-  return (
-    <Pressable {...props} style={({ pressed }) => pressed && styles.pressed}>
-      <ThemedView
-        type={isFocused ? 'backgroundSelected' : 'backgroundElement'}
-        style={styles.tabButtonView}>
-        <ThemedText type="small" themeColor={isFocused ? 'text' : 'textSecondary'}>
-          {children}
-        </ThemedText>
-      </ThemedView>
-    </Pressable>
-  );
+function TabButton({ children, isFocused, name, ...props }: TabTriggerSlotProps & { name: 'home' | 'saved' | 'history' | 'settings' }) {
+  const color = isFocused ? colors.blue : colors.secondary;
+  return <Pressable {...props} accessibilityRole="tab" accessibilityState={{ selected: isFocused }}
+    aria-selected={!!isFocused}
+    style={({ pressed }) => [styles.tab, pressed && { opacity: 0.7 }]}>
+    <Icon name={name === 'saved' ? 'music' : name} color={color} size={25} /><Text style={[styles.label, { color }]}>{children}</Text>
+  </Pressable>;
 }
-
-export function CustomTabList(props: TabListProps) {
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
-
-  return (
-    <View {...props} style={styles.tabListContainer}>
-      <ThemedView type="backgroundElement" style={styles.innerContainer}>
-        <ThemedText type="smallBold" style={styles.brandText}>
-          Expo Starter
-        </ThemedText>
-
-        {props.children}
-
-        <ExternalLink href="https://docs.expo.dev" asChild>
-          <Pressable style={styles.externalPressable}>
-            <ThemedText type="link">Docs</ThemedText>
-            <SymbolView
-              tintColor={colors.text}
-              name={{ ios: 'arrow.up.right.square', web: 'link' }}
-              size={12}
-            />
-          </Pressable>
-        </ExternalLink>
-      </ThemedView>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
-  tabListContainer: {
-    position: 'absolute',
-    width: '100%',
-    padding: Spacing.three,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  innerContainer: {
-    paddingVertical: Spacing.two,
-    paddingHorizontal: Spacing.five,
-    borderRadius: Spacing.five,
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexGrow: 1,
-    gap: Spacing.two,
-    maxWidth: MaxContentWidth,
-  },
-  brandText: {
-    marginRight: 'auto',
-  },
-  pressed: {
-    opacity: 0.7,
-  },
-  tabButtonView: {
-    paddingVertical: Spacing.one,
-    paddingHorizontal: Spacing.three,
-    borderRadius: Spacing.three,
-  },
-  externalPressable: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: Spacing.one,
-    marginLeft: Spacing.three,
-  },
+  content: { flex: 1, backgroundColor: colors.white }, list: { flexDirection: 'row', width: '100%', maxWidth: layout.maxWidth, alignSelf: 'center', backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.border, minHeight: 78, paddingTop: 10, paddingBottom: 15 },
+  tab: { flex: 1, minHeight: 44, alignItems: 'center', justifyContent: 'center', gap: 5 }, label: { fontSize: 11, fontWeight: '500' },
 });

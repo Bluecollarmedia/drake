@@ -1,0 +1,30 @@
+{
+  "Doing It Wrong": {
+    "calibration": "The relationship still contains real care and love, but continuing it would deepen the harm. The fit is mutual or reluctant separation with attachment remaining, not betrayal, hatred, or triumphant independence.",
+    "supports": ["core_meaning", "relationship_context", "negative_matches"]
+  },
+  "Headlines": {
+    "calibration": "The narrator recognizes his success, status, and growing influence and speaks with assured self-belief. The fit is earned recognition and confidence, not loneliness behind fame or romantic grief.",
+    "supports": ["core_meaning", "success_context", "negative_matches"]
+  },
+  "Club Paradise": {
+    "calibration": "Success and fame coexist with alienation, loneliness, changed relationships, and longing for an earlier sense of home or belonging. The fit requires the cost of success, not uncomplicated celebration.",
+    "supports": ["core_meaning", "life_context", "negative_matches"]
+  },
+  "I Get Lonely": {
+    "calibration": "The narrator misses a specific person's presence and emotional connection and feels the absence directly. The fit is personal longing for closeness, not general social isolation or anger after betrayal.",
+    "supports": ["core_meaning", "relationship_context", "negative_matches"]
+  },
+  "Fancy": {
+    "calibration": "The narrator admires a polished, stylish, self-possessed, high-class woman and the care she puts into her presentation. The fit is admiration and celebration of elegance, distinct from raw seduction.",
+    "supports": ["core_meaning", "attraction_context", "negative_matches"]
+  },
+  "Shut It Down": {
+    "calibration": "The narrator is strongly attracted to a woman whose appearance and presence command the room. The energy is intimate and seductive, distinct from Fancy's polished admiration and from committed romantic love.",
+    "supports": ["core_meaning", "attraction_context", "negative_matches"]
+  },
+  "Over": {
+    "calibration": "Rapid fame and success have made life suddenly enormous, excessive, disorienting, and difficult to process, even as the narrator asserts confidence. The fit combines achievement with overwhelm and adjustment, not settled victory.",
+    "supports": ["core_meaning", "life_context", "negative_matches"]
+  }
+}

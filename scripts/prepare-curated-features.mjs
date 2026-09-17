@@ -1,0 +1,16 @@
+import { readFile,writeFile,mkdir } from 'node:fs/promises';
+import { parseCuratedMaster,masterTitleKey } from '../server/catalog/curated-master.mjs';
+import { enrichCuratedMaster } from '../server/catalog/curated-enrichment.mjs';
+const root=new URL('../artifacts/curated-features/',import.meta.url);
+await mkdir(root,{recursive:true});
+const source=await readFile(new URL('../server/catalog/curated/drake-feature-master.txt',import.meta.url),'utf8');
+const read=n=>readFile(new URL('../artifacts/musicbrainz/'+n,import.meta.url),'utf8').then(JSON.parse);
+const master=parseCuratedMaster(source,'feature_guest');
+const leads=parseCuratedMaster(await readFile(new URL('../server/catalog/curated/drake-lead-master.txt',import.meta.url),'utf8'));
+const nameCollisions=master.candidates.flatMap(c=>leads.candidates.filter(l=>masterTitleKey(l.title)===masterTitleKey(c.title)).map(l=>({title:c.title,featurePrimary:c.entries[0].primary,leadCredit:l.entries[0].credit,featureKey:c.key,leadKey:l.key})));
+const extra=await readFile(new URL('targeted-releases.json',root),'utf8').then(JSON.parse).catch(e=>{if(e.code==='ENOENT')return [];throw e;});
+const plan=enrichCuratedMaster(master,await read('recordings.json'),[...await read('releases.json'),...extra],await read('performance-review.json'));
+plan.nameCollisions=nameCollisions;
+await writeFile(new URL('parsed-master.json',root),JSON.stringify(master,null,2));
+await writeFile(new URL('enriched-plan.json',root),JSON.stringify(plan,null,2));
+console.log(JSON.stringify({counts:plan.counts,nameCollisions,exactDuplicates:master.exactRepeatedText,holds:plan.enriched.filter(c=>c.status==='needs_review').map(c=>({title:c.title,primary:c.entries[0].primary,source:c.best?.title,artists:c.best?.artists.map(a=>a.name+' ['+a.role+']'),reasons:c.reviews.filter(r=>r.blocking).map(r=>r.reason)}))},null,2));

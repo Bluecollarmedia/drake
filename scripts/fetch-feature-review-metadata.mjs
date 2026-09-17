@@ -1,0 +1,17 @@
+import { readFile,writeFile } from 'node:fs/promises';
+import { MusicBrainzClient } from '../server/catalog/musicbrainz-client.mjs';
+const root=new URL('../artifacts/curated-features/',import.meta.url);
+const client=new MusicBrainzClient();
+const releases=[];
+const sicko=await client.get('recording/b7326a80-8332-4ee0-8238-d6737efba347',{inc:'artist-credits+artist-rels+isrcs'});
+await writeFile(new URL('sicko-mode-verification.json',root),JSON.stringify({checkedAt:new Date().toISOString(),recording:sicko,disposition:'Performing relationships checked independently from retail billing; supplied Credit Review remains pending.'},null,2));
+releases.push(await client.get('release/379b0b6f-612a-42c3-af84-d31850f000a1',{inc:'recordings+artist-credits+release-groups+isrcs'}));
+const search=await client.get('recording',{query:'recording:"You Got Me" AND artist:"Lil Wayne"',limit:100,offset:0});
+await writeFile(new URL('you-got-me-verification.json',root),JSON.stringify({checkedAt:new Date().toISOString(),query:'recording:"You Got Me" AND artist:"Lil Wayne"',response:search,disposition:'Evidence only; no automatically substituted title or added member.'},null,2));
+const never=releases[0].media.flatMap(m=>m.tracks).find(t=>/never hating/i.test(t.title));
+const recording=await client.get('recording/'+never.recording.id,{inc:'artist-credits+artist-rels+isrcs'});
+await writeFile(new URL('never-hating-verification.json',root),JSON.stringify({checkedAt:new Date().toISOString(),recording,providerEvidenceURL:'https://music.apple.com/us/song/1649121018',disposition:'Official credits establish Lil Baby and Young Thug, not Drake. Excluded from recommendation eligibility; candidate retained.'},null,2));
+never.recording={...never.recording,...recording};
+const previous=await readFile(new URL('targeted-releases.json',root),'utf8').then(JSON.parse).catch(e=>{if(e.code==='ENOENT')return [];throw e;});
+await writeFile(new URL('targeted-releases.json',root),JSON.stringify([...new Map([...previous,...releases].map(r=>[r.id,r])).values()],null,2));
+console.log(JSON.stringify({requests:client.requests,cacheHits:client.cacheHits,youGotMeMatches:search.count,neverHatingId:recording.id,neverHatingArtists:recording['artist-credit']?.map(c=>c.name)}));

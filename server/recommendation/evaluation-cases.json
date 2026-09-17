@@ -1,0 +1,75 @@
+[
+  {
+    "id": "success-recognition",
+    "situation": "I finally made it and people are starting to recognize me. I feel like I proved everyone wrong.",
+    "expectedTitles": ["Headlines"],
+    "distinction": "success with recognition and self-assured vindication"
+  },
+  {
+    "id": "success-alienation",
+    "situation": "I got everything I wanted, but now I feel disconnected from everyone and miss how life used to be.",
+    "expectedTitles": ["Club Paradise"],
+    "distinction": "success mixed with loneliness, alienation, and nostalgia"
+  },
+  {
+    "id": "success-overwhelm",
+    "situation": "Everything is happening so fast. I'm successful, but honestly it's becoming overwhelming.",
+    "expectedTitles": ["Over"],
+    "distinction": "rapid success and difficulty adjusting to overwhelming change"
+  },
+  {
+    "id": "specific-person-longing",
+    "situation": "I don't really feel lonely in general. I just miss this one person and wish they were here.",
+    "expectedTitles": ["I Get Lonely"],
+    "distinction": "longing for one specific person's presence rather than general loneliness"
+  },
+  {
+    "id": "loving-separation",
+    "situation": "I still love her, but I know continuing this relationship is hurting both of us.",
+    "expectedTitles": ["Doing It Wrong"],
+    "distinction": "love remains while accepting that the relationship cannot continue"
+  },
+  {
+    "id": "polished-admiration",
+    "situation": "She always looks expensive and put together. Everything about her is polished.",
+    "expectedTitles": ["Fancy"],
+    "distinction": "admiration for a polished, stylish, high-class woman"
+  },
+  {
+    "id": "immediate-attraction",
+    "situation": "She walked in and immediately had everyone's attention. I'm insanely attracted to her.",
+    "expectedTitles": ["Shut It Down"],
+    "distinction": "commanding presence and immediate seductive attraction"
+  },
+  {
+    "id": "betrayal-not-mutual-incompatibility",
+    "situation": "She cheated on me and lied for months. I am furious and I don't want a tender song about us still loving each other.",
+    "prohibitedTitles": ["Doing It Wrong"],
+    "distinction": "betrayal anger must not collapse into loving mutual separation"
+  },
+  {
+    "id": "general-loneliness-not-specific-person",
+    "situation": "I feel isolated from everybody lately. There isn't one particular person I miss; I just feel alone in my life.",
+    "prohibitedTitles": ["I Get Lonely"],
+    "distinction": "general isolation must not collapse into missing one specific person"
+  },
+  {
+    "id": "reconciliation-not-acceptance",
+    "situation": "We broke up, but I have not accepted it. I keep calling because I want her back and think we can still fix this.",
+    "prohibitedTitles": ["Doing It Wrong"],
+    "distinction": "active reconciliation desire must differ from accepting an impossible relationship"
+  },
+  {
+    "id": "success-with-distrust",
+    "situation": "Now that I'm doing well, people who ignored me suddenly want access to me. I feel successful, but I don't trust their motives.",
+    "prohibitedTitles": ["Over"],
+    "distinction": "success with distrust and opportunistic relationships must differ from overwhelm"
+  },
+  {
+    "id": "quiet-admiration-not-seduction",
+    "situation": "I admire how elegant and composed she is. This is more about her taste and confidence than raw sexual energy.",
+    "expectedTitles": ["Fancy"],
+    "prohibitedTitles": ["Shut It Down"],
+    "distinction": "polished admiration must outrank immediate seductive attraction"
+  }
+]

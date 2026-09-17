@@ -1,0 +1,5 @@
+{
+  "logo": "Photo 1.jpg supplied by the user; original pixels cropped to the mark bounds.",
+  "artwork": "No album artwork from the UI reference is packaged in production assets. Runtime artwork requires a separately authorized provider source.",
+  "blue": "#005FB1"
+}

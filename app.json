@@ -1,42 +1,57 @@
 {
   "expo": {
-    "name": "i-want-you-to-build-phase",
-    "slug": "i-want-you-to-build-phase",
+    "name": "Which Drake?",
+    "slug": "which-drake",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "iwantyoutobuildphase",
-    "userInterfaceStyle": "automatic",
+    "icon": "./assets/brand/app-icon.png",
+    "scheme": "whichdrake",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FFFFFF",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "usesAppleSignIn": true,
+      "supportsTablet": false,
+      "bundleIdentifier": "com.whichdrake.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.whichdrake.app",
+      "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
-      },
-      "predictiveBackGestureEnabled": false
+        "foregroundImage": "./assets/brand/app-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/brand/app-icon.png"
     },
     "plugins": [
       "expo-router",
+      "expo-dev-client",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/brand/wd-logo.png",
+          "imageWidth": 140
         }
-      ]
+      ],
+      "expo-secure-store",
+      "expo-apple-authentication",
+      "expo-web-browser",
+      "expo-iap"
     ],
     "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "73b6d2b2-f5d6-4eb1-830d-32f001d66105"
+      }
     }
   }
 }
