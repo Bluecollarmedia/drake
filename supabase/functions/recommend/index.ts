@@ -17,6 +17,7 @@ function reservationResponse(error:unknown){const message=String((error as {mess
  if(message.includes('free recommendation')||message.includes('allowance'))return {code:'free_recommendation_limit',status:429};
  if(message.includes('minute rate'))return {code:'minute_rate_limit',status:429};
  if(message.includes('daily rate'))return {code:'daily_rate_limit',status:429};
+ if(message.includes('rate limit'))return {code:'minute_rate_limit',status:429};
  if(message.includes('global operator budget'))return {code:'recommendation_service_unavailable',status:503};
  if(message.includes('authentication')||message.includes('installation'))return {code:'authentication_required',status:401};
  return {code:'recommendation_unavailable',status:503};}
